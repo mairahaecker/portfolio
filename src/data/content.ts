@@ -90,7 +90,7 @@ export const pillars: Pillar[] = [
     title: "Partnerships & Relationships",
     icon: "handshake",
     body:
-      "Forming new partnerships, then nurturing and keeping them alive over time. Coordinating and organizing with partners, and negotiating the details. At the EHL committee I connected hospitality students with leading hotel groups and facilitated executive introductions and company partnerships. At Nayara I coordinated across departments, auditors, and leadership. This is the people-facing work I love most.",
+      "Forming new partnerships, then nurturing and keeping them over time. Coordinating, organizing, and negotiating with partners. This is the people-facing work I love most.",
   },
   {
     key: "events",
