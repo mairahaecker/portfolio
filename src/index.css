@@ -38,10 +38,15 @@
 
 html {
   scroll-behavior: smooth;
+  /* The site is intentionally light. This stops mobile browsers
+     (Chrome / Samsung Internet) from force-darkening the cream design. */
+  color-scheme: only light;
+  background-color: var(--color-paper);
 }
 
 body {
   margin: 0;
+  color-scheme: only light;
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
