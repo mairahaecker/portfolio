@@ -10,8 +10,8 @@ import { useTilt, useMagnetic } from "./hooks/useMouseFx";
 import { confettiBurst } from "./lib/confetti";
 import {
   MailIcon, PhoneIcon, LinkedInIcon, WhatsAppIcon, InstagramIcon, CalendarIcon,
-  ArrowIcon, ArrowUpRight, DownloadIcon, PlayIcon, PinIcon, SparkIcon, RocketIcon,
-  MicIcon, MenuIcon, CloseIcon,
+  ArrowIcon, ArrowUpRight, DownloadIcon, PlayIcon, PinIcon, SparkIcon, HandshakeIcon,
+  RocketIcon, MicIcon, MenuIcon, CloseIcon,
 } from "./components/icons";
 import {
   profile, ticker, about, stats, lookingFor, credibility, testimonial,
@@ -70,7 +70,7 @@ function Eyebrow({ children }: { children: string }) {
   );
 }
 
-const pillarIcon = { spark: SparkIcon, rocket: RocketIcon, mic: MicIcon };
+const pillarIcon = { spark: SparkIcon, handshake: HandshakeIcon, rocket: RocketIcon, mic: MicIcon };
 
 /* --------------------------------- Nav ----------------------------------- */
 
@@ -300,10 +300,10 @@ function WhatIDo() {
         <Reveal>
           <Eyebrow>What I do</Eyebrow>
           <h2 className="mt-5 max-w-2xl font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
-            Three ways I help a startup move faster.
+            How I help a startup move faster.
           </h2>
         </Reveal>
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map((p, i) => {
             const Icon = pillarIcon[p.icon];
             return (

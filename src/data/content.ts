@@ -34,7 +34,7 @@ export const ticker: string[] = [
 
 export const about = {
   body:
-    "Hi, I'm Maira. I'm happiest between people, on my feet, making things happen, whether that's running an event for 500+ people, hosting a webinar, or building something from zero. I've worked in hospitality and events across Europe, I'm building my own edtech venture (Talkadoo), and I teach myself whatever I need to move fast (lately, a lot of AI). I care about work that's creative, fun, and actually makes people's lives better. I'm looking to join a startup in Munich where I can be close to the founders and the action.",
+    "Hi, I'm Maira. I'm happiest between people, on my feet, making things happen, whether that's running an event for 500+ people, building a partnership and keeping it alive, hosting a webinar, or starting something from zero. I've worked in hospitality, events, and partnerships across Europe, I'm building my own edtech venture (Talkadoo), and I teach myself whatever I need to move fast (lately, a lot of AI). I love connecting people, building relationships, and turning them into real outcomes. I care about work that's creative, fun, and actually makes people's lives better. I'm looking to join a startup where I can be close to the founders and the action.",
   goGetterTitle: "If I don't know how to do it, I learn it.",
   goGetter:
     "I knew almost nothing about sustainability, then taught myself enough to write a full ESG report for a resort group. I'd never built a website, so I'm building this one. I taught myself to make a luxury jewelry catalog, to pitch, and to host. Give me something new and I'll figure it out.",
@@ -54,8 +54,8 @@ export const lookingFor = {
   headline: "What I'm looking for",
   focus:
     "A startup role in Munich, open to relocating across the DACH region for the right fit. Available from August 2026.",
-  targets: ["Events", "Partnerships", "Operations", "Building & venture"],
-  note: "I'm an operator at heart: I like owning the messy middle where strategy turns into things that actually ship.",
+  targets: ["Partnerships", "Events", "Operations", "Building & venture"],
+  note: "I'm a people-and-partnerships person and an operator at heart: I build relationships and own the messy middle where strategy turns into things that actually ship.",
 };
 
 // Where I've worked & studied (full list from the CV)
@@ -81,10 +81,17 @@ export type Pillar = {
   key: string;
   title: string;
   body: string;
-  icon: "spark" | "rocket" | "mic";
+  icon: "spark" | "handshake" | "rocket" | "mic";
 };
 
 export const pillars: Pillar[] = [
+  {
+    key: "partnerships",
+    title: "Partnerships & Relationships",
+    icon: "handshake",
+    body:
+      "Forming new partnerships, then nurturing and keeping them alive over time. Coordinating and organizing with partners, and negotiating the details. At the EHL committee I connected hospitality students with leading hotel groups and facilitated executive introductions and company partnerships. At Nayara I coordinated across departments, auditors, and leadership. This is the people-facing work I love most.",
+  },
   {
     key: "events",
     title: "Events & Experiences",
@@ -97,7 +104,7 @@ export const pillars: Pillar[] = [
     title: "Founder-facing Ops & Building",
     icon: "rocket",
     body:
-      "I build the things founders need and don't have time for: validation, decks, partnerships, processes, go-to-market. I move fast in the chaos and I'm not afraid of a blank page.",
+      "I build the things founders need and don't have time for: validation, decks, processes, go-to-market. I move fast in the chaos and I'm not afraid of a blank page.",
   },
   {
     key: "speaking",
@@ -336,10 +343,11 @@ export const chatbot = {
     "Hi, I'm Maira's mini-assistant. Tap a question below, or type your own.",
   fallback:
     "I'm not totally sure about that one, but Maira would happily tell you herself. The fastest way is to book a quick call or email her, both are in the Contact section.",
-  starters: ["who", "role", "relocate", "start", "talkadoo", "cv", "book"],
+  starters: ["who", "role", "partnerships", "relocate", "start", "talkadoo", "cv", "book"],
   qa: [
-    { id: "who", chip: "Who is Maira?", keywords: ["who", "about", "yourself", "summary", "30 second", "tell me about"], a: "Short version: I'm an events-and-people person, startup builder, and creative, with 4+ years across hospitality, sustainability, and early-stage startups. I run events, host and pitch on stage, and build things from zero. I do my best work in fast-moving teams where people, strategy, and execution meet." },
-    { id: "role", chip: "What role are you looking for?", keywords: ["role", "looking for", "job", "position", "hiring", "want"], a: "A startup role in events, partnerships, operations, or building. I'm an operator at heart, so I like owning the messy middle where strategy turns into things that actually ship." },
+    { id: "who", chip: "Who is Maira?", keywords: ["who", "about", "yourself", "summary", "30 second", "tell me about", "what do you do", "what i do"], a: "Short version: I'm an events, people, and partnerships person, a startup builder, and a creative, with 4+ years across hospitality, sustainability, and early-stage startups. I build and nurture partnerships, run events, host and pitch on stage, and build things from zero. I do my best work in fast-moving teams where people, strategy, and execution meet." },
+    { id: "role", chip: "What role are you looking for?", keywords: ["role", "looking for", "job", "position", "hiring", "want"], a: "A startup role in partnerships, events, operations, or building. Partnerships are a big focus for me: forming new ones, keeping relationships alive, coordinating with partners, and negotiating. I'm an operator at heart, so I like owning the messy middle where strategy turns into things that actually ship." },
+    { id: "partnerships", chip: "What's her partnerships experience?", keywords: ["partnership", "partnerships", "relationship", "relationships", "connect", "connections", "negotiate", "negotiating", "stakeholder", "network"], a: "Partnerships are where I'm strongest and happiest. I form new partnerships, then nurture and keep them alive over time, coordinate and organize with partners, and negotiate the details. At the EHL committee I connected hospitality students with leading hotel groups and facilitated executive introductions and company partnerships. At Nayara I coordinated across departments, auditors, and international leadership. It's deeply people-facing work, and I love turning relationships into real outcomes." },
     { id: "relocate", chip: "Are you open to relocating?", keywords: ["relocate", "relocating", "move", "where", "location", "munich", "dach", "remote"], a: "My main focus is Munich, and I'm open to relocating across the DACH region for the right fit." },
     { id: "start", chip: "When can you start?", keywords: ["start", "available", "availability", "when", "notice"], a: "I'm available from August 2026." },
     { id: "events", chip: "Tell me about your events experience", keywords: ["event", "events", "organize", "host events", "hospitality"], a: "I run events end to end: concept, logistics, partners, and on-site coordination, for audiences from a handful to 500+. I've organized 30+ events and hosted plenty of them, from industry nights to webinars." },
@@ -347,7 +355,7 @@ export const chatbot = {
     { id: "ops", chip: "Operations & startup experience?", keywords: ["operations", "ops", "startup experience", "build", "building", "process", "sales"], a: "Beyond events, I'm an operator and builder. I led a Green Globe certification across three resorts on my own, built processes and trainings for 500+ staff, ran a full sales cycle at a US startup, and I'm building my own venture. I move fast in startup chaos." },
     { id: "languages", chip: "What languages do you speak?", keywords: ["language", "languages", "german", "speak", "deutsch", "spanish", "french"], a: "I'm native in German, Spanish, and Catalan, and fluent in English and French. So German is no problem at all." },
     { id: "speaking", chip: "Public speaking & hosting?", keywords: ["speaking", "public speaking", "host", "hosting", "pitch", "stage", "webinar", "moderate"], a: "Public speaking is my favorite part of the job. I host the 'Meetings with the Dean' webinar series at JIBS, I've pitched ventures on stage many times, presented to 50+ CEOs at EHL, and sharpened it at Toastmasters. There's a pitch video in the Speaking section." },
-    { id: "different", chip: "What makes you different?", keywords: ["different", "stand out", "unique", "why you", "special"], a: "I'm a genuine go-getter who teaches herself anything. I taught myself sustainability and wrote a full ESG report, taught myself to pitch, host, and design a jewelry catalog, and I built this site myself. I bring warmth, range, and follow-through." },
+    { id: "different", chip: "What makes you different?", keywords: ["different", "stand out", "unique", "why you", "special", "strength", "strengths", "good at"], a: "Two things. First, I'm genuinely great with people: building partnerships, keeping relationships alive, and turning them into real outcomes. Second, I'm a go-getter who teaches herself anything. I taught myself sustainability and wrote a full ESG report, taught myself to pitch, host, and design a jewelry catalog, and I built this site myself. I bring warmth, range, and follow-through." },
     { id: "why", chip: "Why startups, why Munich?", keywords: ["why startup", "why munich", "why", "motivation"], a: "Startups are where people, strategy, and execution meet, and I do my best work close to the founders and the action. Munich is a growing hub in the DACH ecosystem I've been building in, and it's where I want to plant roots." },
     { id: "worklike", chip: "What are you like to work with?", keywords: ["work with", "like to work", "personality", "team", "colleague"], a: "Warm, high-energy, and reliable. I take ownership, stay calm in chaos, and genuinely like people. I'd rather figure something out than wait to be told how." },
     { id: "cv", chip: "Can I see your CV?", keywords: ["cv", "resume", "download"], a: "Of course. There's a 'Download CV' button near the top of the page, that opens the full PDF." },

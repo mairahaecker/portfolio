@@ -61,6 +61,9 @@ export const PinIcon = ({ className = base }: IconProps) =>
 export const SparkIcon = ({ className = base }: IconProps) =>
   stroke(className, <path d="M12 3c.4 3.6 1.4 4.6 5 5-3.6.4-4.6 1.4-5 5-.4-3.6-1.4-4.6-5-5 3.6-.4 4.6-1.4 5-5Z" />);
 
+export const HandshakeIcon = ({ className = base }: IconProps) =>
+  stroke(className, (<><circle cx="9" cy="12" r="5.2" /><circle cx="15" cy="12" r="5.2" /></>));
+
 export const RocketIcon = ({ className = base }: IconProps) =>
   stroke(className, (<><path d="M5 15c-1 1-1.5 4-1.5 4s3-.5 4-1.5" /><path d="M9 15l-2-2c1-5 5-9 11-10 1 6-3 10-8 11l-1-1Z" /><circle cx="14.5" cy="9.5" r="1.4" /></>));
 
