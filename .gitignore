@@ -1,0 +1,43 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local tooling / Claude config
+.claude/
+
+# Large source assets and originals (NOT needed by the built site).
+# The processed, web-ready versions already live in /public/assets.
+*.zip
+*.exe
+*.docx
+*.url
+/portfolio-3-001/
+/_assets_staging/
+/Catalog (Booklets) (Magazines) (1)/
+# Root-level original media/docs only (keeps everything under /public/)
+/*.pdf
+/*.jpg
+/*.jpeg
+/*.png
+/*.heic

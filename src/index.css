@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm, vibrant base */
+  --color-paper: #fff7f0;
+  --color-paper-2: #ffeede;
+  --color-paper-3: #ffe3cf;
+  --color-cream: #fffaf4;
+  --color-ink: #2a1f18;
+  --color-ink-soft: #6c5d50;
+  --color-ink-faint: #9a8b7d;
+
+  /* Sunset / coral accents */
+  --color-coral: #ff5c39;
+  --color-coral-deep: #e8431f;
+  --color-tangerine: #ff8a3d;
+  --color-amber: #ffb23e;
+  --color-blush: #ff8fa3;
+
+  /* Talkadoo tie-in (used sparingly) */
+  --color-grape: #7c53c9;
+  --color-teal: #21b6a8;
+  --color-navy: #1f3a8a;
+
+  --color-line: #f4ddc9;
+
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-accent: "Fraunces", ui-serif, Georgia, serif;
+
+  --shadow-soft: 0 2px 6px rgba(42, 31, 24, 0.05),
+    0 14px 34px -16px rgba(232, 67, 31, 0.18);
+  --shadow-lift: 0 4px 10px rgba(42, 31, 24, 0.06),
+    0 26px 50px -22px rgba(232, 67, 31, 0.28);
+
+  --ease-out-back: cubic-bezier(0.22, 1.2, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-coral);
+  color: #fff;
+}
+
+/* Headings default to the characterful display face */
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+/* --- Scroll reveal --- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; }
+.reveal.in { animation: rise 0.7s var(--ease-out-back) forwards; }
+
+/* --- Bouncy penguin --- */
+@keyframes bouncy-hop {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  30% { transform: translateY(-26px) rotate(2deg); }
+  55% { transform: translateY(0) rotate(-1deg); }
+  70% { transform: translateY(-10px) rotate(1deg); }
+}
+.bouncy-hop { animation: bouncy-hop 2.6s ease-in-out infinite; }
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.float-soft { animation: float-soft 5s ease-in-out infinite; }
+
+/* Animated gradient text for accents */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-coral),
+    var(--color-tangerine) 45%,
+    var(--color-amber)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Marquee for the ticker strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; }
+  .reveal.in,
+  .bouncy-hop,
+  .float-soft,
+  .marquee-track { animation: none; }
+}
