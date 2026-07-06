@@ -37,11 +37,28 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Lenis owns smooth scrolling when motion is allowed. Native anchor jumps
+     stay instant (fine for reduced-motion / no-JS). */
+  scroll-behavior: auto;
   /* The site is intentionally light. This stops mobile browsers
      (Chrome / Samsung Internet) from force-darkening the cream design. */
   color-scheme: only light;
   background-color: var(--color-paper);
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -58,6 +75,17 @@ body {
 ::selection {
   background: var(--color-coral);
   color: #fff;
+}
+
+/* Visible keyboard focus for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-coral-deep);
+  outline-offset: 2px;
+  border-radius: 8px;
 }
 
 /* Headings default to the characterful display face */
@@ -112,11 +140,138 @@ h1, h2, h3 {
   animation: marquee 26s linear infinite;
 }
 
+/* --- Living warm background --- */
+@keyframes drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6%, -5%) scale(1.12); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-7%, 6%) scale(1.08); }
+}
+@keyframes hue-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.bg-living {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    #fff7f0 0%,
+    #ffefe2 35%,
+    #ffe9db 60%,
+    #fff4ec 100%
+  );
+  background-size: 200% 200%;
+  animation: hue-pan 24s ease-in-out infinite;
+}
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  will-change: transform;
+}
+.bg-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --- Loader --- */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-paper);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loader.done {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader-word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  display: inline-flex;
+}
+.loader-word span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  animation: loader-in 0.5s var(--ease-out-back) forwards;
+}
+.loader-word .dot { color: var(--color-coral); }
+@keyframes loader-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Custom cursor (desktop, fine pointer only) --- */
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgba(232, 67, 31, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 90;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease,
+    border-color 0.2s ease;
+  will-change: transform;
+}
+.cursor-ring.hovering {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 92, 57, 0.1);
+  border-color: rgba(232, 67, 31, 0.8);
+}
+@media (hover: none), (pointer: coarse) {
+  .cursor-ring { display: none; }
+}
+
+/* --- Button squash-and-stretch --- */
+.squash {
+  transition: transform 0.18s var(--ease-out-back);
+}
+.squash:hover { transform: translateY(-2px); }
+.squash:active { transform: scale(0.94); }
+
+/* Persistent dock entrance */
+@keyframes dock-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Reveal helper for GSAP-driven intros: hidden until JS sets it,
+   but visible by default if JS never runs (progressive enhancement). */
+.js-anim [data-hero] { opacity: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; }
   .reveal.in,
   .bouncy-hop,
   .float-soft,
-  .marquee-track { animation: none; }
+  .marquee-track,
+  .bg-living,
+  .bg-blob { animation: none !important; }
+  .js-anim [data-hero] { opacity: 1 !important; }
+  #loader { display: none; }
+  .cursor-ring { display: none; }
 }

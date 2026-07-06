@@ -82,6 +82,8 @@ export type Pillar = {
   title: string;
   body: string;
   icon: "spark" | "handshake" | "rocket" | "mic";
+  href: string;
+  related: string[];
 };
 
 export const pillars: Pillar[] = [
@@ -91,6 +93,12 @@ export const pillars: Pillar[] = [
     icon: "handshake",
     body:
       "Forming new partnerships, then nurturing and keeping them over time. Coordinating, organizing, and negotiating with partners. This is the people-facing work I love most.",
+    href: "#highlights",
+    related: [
+      "EHL: connected students with hotel groups",
+      "Nayara: coordinated across teams & auditors",
+      "Executive introductions & company partnerships",
+    ],
   },
   {
     key: "events",
@@ -98,6 +106,12 @@ export const pillars: Pillar[] = [
     icon: "spark",
     body:
       "I run events end to end: concept, logistics, partners, and on-site coordination, for audiences from a handful to 500+. I turn a rough idea into a room full of people having a great time.",
+    href: "#highlights",
+    related: [
+      "30+ events organized",
+      "500+ employees trained",
+      "Industry nights, panels & webinars",
+    ],
   },
   {
     key: "building",
@@ -105,6 +119,12 @@ export const pillars: Pillar[] = [
     icon: "rocket",
     body:
       "I build the things founders need and don't have time for: validation, decks, processes, go-to-market. I move fast in the chaos and I'm not afraid of a blank page.",
+    href: "#talkadoo",
+    related: [
+      "Talkadoo: my edtech venture",
+      "ESG report, taught myself from zero",
+      "Science Park startup program",
+    ],
   },
   {
     key: "speaking",
@@ -112,6 +132,12 @@ export const pillars: Pillar[] = [
     icon: "mic",
     body:
       "I host webinars and live events, moderate Q&As, and pitch on stage. Public speaking is my favorite part of the job, and I take every chance to do it.",
+    href: "#speaking",
+    related: [
+      "Host, JIBS 'Meetings with the Dean'",
+      "Presented to 50+ hospitality CEOs",
+      "Pitched ventures live on stage",
+    ],
   },
 ];
 

@@ -1,12 +1,17 @@
-import { useState, type ReactNode } from "react";
+import { useState, useLayoutEffect, useRef, type ReactNode } from "react";
+import { gsap } from "gsap";
 import { Reveal } from "./components/Reveal";
 import { Bouncy } from "./components/Bouncy";
 import { Placeholder } from "./components/Placeholder";
 import { InViewVideo } from "./components/InViewVideo";
-import { AskMeAnything } from "./components/AskMeAnything";
-import { StarCursor } from "./components/StarCursor";
+import { ActionDock } from "./components/ActionDock";
+import { CustomCursor } from "./components/CustomCursor";
+import { LivingBackground } from "./components/LivingBackground";
+import { Loader } from "./components/Loader";
+import { ScrollProgress } from "./components/ScrollProgress";
 import { DraggableCollage } from "./components/DraggableCollage";
 import { useTilt, useMagnetic } from "./hooks/useMouseFx";
+import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import { confettiBurst } from "./lib/confetti";
 import {
   MailIcon, PhoneIcon, LinkedInIcon, WhatsAppIcon, InstagramIcon, CalendarIcon,
@@ -132,91 +137,102 @@ function Nav() {
 /* -------------------------------- Hero ----------------------------------- */
 
 function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = gsap.context(() => {
+      // "Setting up the room before an event": pieces arrive and settle.
+      const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
+      tl.from('[data-hero="eyebrow"]', { y: 16, opacity: 0, duration: 0.5 })
+        .from('[data-hero="title"]', { y: 34, opacity: 0 }, "-=0.25")
+        .from('[data-hero="sub"]', { y: 22, opacity: 0 }, "-=0.55")
+        .from('[data-hero="cta"] > *', { y: 18, opacity: 0, scale: 0.92, stagger: 0.08, duration: 0.5 }, "-=0.45")
+        .from('[data-hero="meta"]', { y: 14, opacity: 0, duration: 0.5 }, "-=0.3")
+        .from('[data-hero="portrait"]', { scale: 0.92, opacity: 0, rotate: -2, duration: 0.9, ease: "power4.out" }, "-=1.15")
+        .from('[data-hero="chip"]', { scale: 0.4, opacity: 0, duration: 0.5, ease: "back.out(1.7)" }, "-=0.35")
+        .from('[data-hero="ticker"]', { y: 22, opacity: 0, duration: 0.6 }, "-=0.4");
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="top" className="relative overflow-hidden">
+    <section ref={sectionRef} id="top" className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-amber/25 blur-3xl float-soft" />
-        <div className="absolute right-0 top-32 h-80 w-80 rounded-full bg-blush/25 blur-3xl" />
-        <div className="absolute -bottom-20 left-1/3 h-72 w-72 rounded-full bg-coral/15 blur-3xl" />
+        <div data-parallax="0.12" className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-amber/20 blur-3xl" />
+        <div data-parallax="0.22" className="absolute right-0 top-32 h-80 w-80 rounded-full bg-blush/20 blur-3xl" />
       </div>
 
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 pt-16 pb-12 md:grid-cols-[1.15fr_0.85fr] md:pt-24 md:pb-20">
         <div>
-          <Reveal>
-            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-ink-soft">
-              Hi, I'm Maira
-            </p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h1 className="font-display text-[2.6rem] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-[4.1rem]">
-              I make things happen:{" "}
-              <span className="text-gradient">events, ideas,</span> and the
-              occasional hoodie.
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
-              {profile.subline}
-            </p>
-          </Reveal>
-          <Reveal delay={240}>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <MagneticLink
-                href={profile.calendly}
-                external
-                onClick={fireConfetti}
-                className="rounded-full bg-coral px-6 py-3.5 text-sm font-semibold text-white shadow-soft transition-colors hover:bg-coral-deep"
-              >
-                <CalendarIcon className="h-4 w-4" />
-                Book a chat
-              </MagneticLink>
-              <MagneticLink
-                href={`mailto:${profile.email}`}
-                className="rounded-full border border-line bg-cream px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-coral hover:text-coral-deep"
-              >
-                <MailIcon className="h-4 w-4" />
-                Email me
-              </MagneticLink>
-              <a
-                href="/Maira_Haecker_CV_Munich.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-cream px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-coral hover:text-coral-deep"
-              >
-                <DownloadIcon className="h-4 w-4" />
-                Download CV
-              </a>
-            </div>
-          </Reveal>
-          <Reveal delay={320}>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-faint">
-              <span className="inline-flex items-center gap-2">
-                <PinIcon className="h-4 w-4 text-coral" /> {profile.location}
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-teal" /> {profile.availability}
-              </span>
-            </div>
-          </Reveal>
+          <p data-hero="eyebrow" className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-ink-soft">
+            Hi, I'm Maira
+          </p>
+          <h1 data-hero="title" className="font-display text-[2.6rem] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-[4.1rem]">
+            I make things happen:{" "}
+            <span className="text-gradient">events, ideas,</span> and the
+            occasional hoodie.
+          </h1>
+          <p data-hero="sub" className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+            {profile.subline}
+          </p>
+          <div data-hero="cta" className="mt-8 flex flex-wrap items-center gap-3">
+            <MagneticLink
+              href={profile.calendly}
+              external
+              onClick={fireConfetti}
+              className="squash rounded-full bg-coral px-6 py-3.5 text-sm font-semibold text-white shadow-soft hover:bg-coral-deep"
+            >
+              <CalendarIcon className="h-4 w-4" />
+              Book a chat
+            </MagneticLink>
+            <a
+              href="#highlights"
+              className="squash inline-flex items-center gap-2 rounded-full border border-line bg-cream px-6 py-3.5 text-sm font-semibold text-ink hover:border-coral hover:text-coral-deep"
+            >
+              <SparkIcon className="h-4 w-4 text-coral" />
+              See my work
+            </a>
+            <a
+              href="/Maira_Haecker_CV_Munich.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="squash inline-flex items-center gap-2 rounded-full border border-line bg-cream px-6 py-3.5 text-sm font-semibold text-ink hover:border-coral hover:text-coral-deep"
+            >
+              <DownloadIcon className="h-4 w-4" />
+              Download CV
+            </a>
+          </div>
+          <div data-hero="meta" className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-faint">
+            <span className="inline-flex items-center gap-2">
+              <PinIcon className="h-4 w-4 text-coral" /> {profile.location}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-teal" /> {profile.availability}
+            </span>
+          </div>
         </div>
 
-        <Reveal delay={200}>
-          <TiltCard max={9} className="relative mx-auto w-full max-w-sm">
+        <div data-hero="portrait" className="relative mx-auto w-full max-w-sm">
+          <TiltCard max={9} className="relative">
             <div className="absolute -inset-3 -z-10 rotate-3 rounded-[2rem] bg-gradient-to-br from-coral via-tangerine to-amber opacity-90" />
             <img
               src="/assets/people/headshot.jpg"
               alt="Maira Haecker"
+              fetchPriority="high"
               className="aspect-[4/5] w-full rounded-[1.7rem] object-cover object-top shadow-lift"
             />
-            <div className="absolute -bottom-4 -left-4 rotate-[-4deg] rounded-2xl bg-cream px-4 py-2.5 shadow-lift">
+            <div data-hero="chip" className="absolute -bottom-4 -left-4 rotate-[-4deg] rounded-2xl bg-cream px-4 py-2.5 shadow-lift">
               <p className="font-display text-sm font-bold text-ink">Events. Building. Creative.</p>
             </div>
           </TiltCard>
-        </Reveal>
+        </div>
       </div>
 
       {/* moving ticker strip */}
-      <div className="border-y border-line bg-ink py-3 text-paper">
+      <div data-hero="ticker" className="border-y border-line bg-ink py-3 text-paper">
         <div className="marquee-track">
           {[...ticker, ...ticker].map((t, i) => (
             <span key={i} className="mx-5 inline-flex items-center gap-5 font-display text-sm font-semibold uppercase tracking-wide">
@@ -294,33 +310,88 @@ function About() {
 /* ------------------------------ What I do -------------------------------- */
 
 function WhatIDo() {
+  const [active, setActive] = useState(0);
+  const p = pillars[active];
+  const ActiveIcon = pillarIcon[p.icon];
   return (
-    <section id="what-i-do" className="scroll-mt-20 bg-paper-2/60 py-20 md:py-28">
+    <section id="what-i-do" className="scroll-mt-20 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <Reveal>
           <Eyebrow>What I do</Eyebrow>
           <h2 className="mt-5 max-w-2xl font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">
             How I help a startup move faster.
           </h2>
+          <p className="mt-4 max-w-xl text-sm text-ink-faint">
+            Hover or tap a strength to see the proof behind it.
+          </p>
         </Reveal>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((p, i) => {
-            const Icon = pillarIcon[p.icon];
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {pillars.map((pl, i) => {
+            const Icon = pillarIcon[pl.icon];
+            const isActive = i === active;
             return (
-              <Reveal key={p.key} delay={i * 90}>
-                <TiltCard className="h-full">
-                  <div className="flex h-full flex-col rounded-3xl border border-line bg-cream p-7 shadow-soft">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-coral/12 text-coral">
-                      <Icon className="h-6 w-6" />
-                    </span>
-                    <h3 className="mt-5 font-display text-xl font-bold text-ink">{p.title}</h3>
-                    <p className="mt-3 text-base leading-relaxed text-ink-soft">{p.body}</p>
-                  </div>
-                </TiltCard>
+              <Reveal key={pl.key} delay={i * 70}>
+                <button
+                  type="button"
+                  data-cursor
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  onClick={() => setActive(i)}
+                  aria-pressed={isActive}
+                  className={`flex h-full w-full flex-col rounded-3xl border p-6 text-left shadow-soft transition-all duration-300 ${
+                    isActive
+                      ? "-translate-y-1 border-coral/50 bg-cream shadow-lift"
+                      : "border-line bg-cream/70 hover:-translate-y-1 hover:border-coral/30"
+                  }`}
+                >
+                  <span
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-colors ${
+                      isActive ? "bg-coral text-white" : "bg-coral/12 text-coral"
+                    }`}
+                  >
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="mt-5 font-display text-lg font-bold leading-snug text-ink">
+                    {pl.title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">{pl.body}</p>
+                </button>
               </Reveal>
             );
           })}
         </div>
+
+        {/* live detail panel */}
+        <Reveal>
+          <div className="mt-5 rounded-3xl border border-coral/25 bg-cream p-6 shadow-soft md:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-coral/12 text-coral">
+                  <ActiveIcon className="h-5 w-5" />
+                </span>
+                <h3 className="font-display text-xl font-bold text-ink">{p.title}</h3>
+              </div>
+              <a
+                href={p.href}
+                className="squash inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-coral-deep"
+              >
+                See related work <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-3">
+              {p.related.map((r) => (
+                <li
+                  key={r}
+                  className="flex items-start gap-2.5 rounded-2xl bg-paper-2/70 px-4 py-3 text-sm leading-snug text-ink-soft"
+                >
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" />
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -698,7 +769,7 @@ function Contact() {
 function Footer() {
   return (
     <footer className="bg-ink/95 text-paper/55">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-5 py-8 text-sm sm:flex-row sm:items-center">
+      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-5 pt-8 pb-28 text-sm sm:flex-row sm:items-center">
         <span className="font-display font-bold text-paper">Maira Haecker</span>
         <span>Built from scratch by me. No em dashes were harmed.</span>
         <div className="flex items-center gap-5">
@@ -800,9 +871,13 @@ function TestimonialBlock() {
 /* --------------------------------- App ----------------------------------- */
 
 export default function App() {
+  useSmoothScroll();
   return (
-    <div className="min-h-screen bg-paper text-ink">
-      <StarCursor />
+    <div className="relative min-h-screen text-ink">
+      <Loader />
+      <LivingBackground />
+      <CustomCursor />
+      <ScrollProgress />
       <Nav />
       <main>
         <Hero />
@@ -819,7 +894,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-      <AskMeAnything />
+      <ActionDock />
     </div>
   );
 }
