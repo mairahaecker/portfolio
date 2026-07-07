@@ -5,8 +5,8 @@ export const profile = {
   punchy: "I make things happen: events, ideas, and the occasional hoodie.",
   roleLine: "Events & people person. Startup builder. Creative.",
   subline:
-    "I'm an events-and-people person, startup builder, and creative, looking for a startup role in Munich where I can be close to the founders and the action.",
-  location: "Munich",
+    "I'm an events-and-people person, startup builder, and creative, looking for a startup role in the DACH region where I can be close to the founders and the action.",
+  location: "DACH region",
   availability: "Available from August 2026",
   email: "mairahaecker@gmail.com",
   phone: "+34 607 84 50 01",
@@ -39,7 +39,7 @@ export const about = {
   goGetter:
     "I knew almost nothing about sustainability, then taught myself enough to write a full ESG report for a resort group. I'd never built a website, so I'm building this one. I taught myself to make a luxury jewelry catalog, to pitch, and to host. Give me something new and I'll figure it out.",
   current:
-    "Right now: applying for startup roles in Munich, and always learning, lately going deep on AI.",
+    "Right now: applying for startup roles across the DACH region, and always learning, lately going deep on AI.",
 };
 
 // Headline impact numbers
@@ -53,7 +53,7 @@ export const stats: { value: string; label: string }[] = [
 export const lookingFor = {
   headline: "What I'm looking for",
   focus:
-    "A startup role in Munich, open to relocating across the DACH region for the right fit. Available from August 2026.",
+    "A startup role in the DACH region (Germany, Austria, Switzerland), ready to relocate for the right fit. Available from August 2026.",
   targets: ["Partnerships", "Events", "Operations", "Building & venture"],
   note: "I'm a people-and-partnerships person and an operator at heart: I build relationships and own the messy middle where strategy turns into things that actually ship.",
 };
@@ -374,7 +374,7 @@ export const chatbot = {
     { id: "who", chip: "Who is Maira?", keywords: ["who", "about", "yourself", "summary", "30 second", "tell me about", "what do you do", "what i do"], a: "Short version: I'm an events, people, and partnerships person, a startup builder, and a creative, with 4+ years across hospitality, sustainability, and early-stage startups. I build and nurture partnerships, run events, host and pitch on stage, and build things from zero. I do my best work in fast-moving teams where people, strategy, and execution meet." },
     { id: "role", chip: "What role are you looking for?", keywords: ["role", "looking for", "job", "position", "hiring", "want"], a: "A startup role in partnerships, events, operations, or building. Partnerships are a big focus for me: forming new ones, keeping relationships alive, coordinating with partners, and negotiating. I'm an operator at heart, so I like owning the messy middle where strategy turns into things that actually ship." },
     { id: "partnerships", chip: "What's her partnerships experience?", keywords: ["partnership", "partnerships", "relationship", "relationships", "connect", "connections", "negotiate", "negotiating", "stakeholder", "network"], a: "Partnerships are where I'm strongest and happiest. I form new partnerships, then nurture and keep them alive over time, coordinate and organize with partners, and negotiate the details. At the EHL committee I connected hospitality students with leading hotel groups and facilitated executive introductions and company partnerships. At Nayara I coordinated across departments, auditors, and international leadership. It's deeply people-facing work, and I love turning relationships into real outcomes." },
-    { id: "relocate", chip: "Are you open to relocating?", keywords: ["relocate", "relocating", "move", "where", "location", "munich", "dach", "remote"], a: "My main focus is Munich, and I'm open to relocating across the DACH region for the right fit." },
+    { id: "relocate", chip: "Are you open to relocating?", keywords: ["relocate", "relocating", "move", "where", "location", "munich", "dach", "germany", "austria", "switzerland", "remote"], a: "I'm looking across the DACH region (Germany, Austria, Switzerland), and I'm ready to relocate for the right fit." },
     { id: "start", chip: "When can you start?", keywords: ["start", "available", "availability", "when", "notice"], a: "I'm available from August 2026." },
     { id: "events", chip: "Tell me about your events experience", keywords: ["event", "events", "organize", "host events", "hospitality"], a: "I run events end to end: concept, logistics, partners, and on-site coordination, for audiences from a handful to 500+. I've organized 30+ events and hosted plenty of them, from industry nights to webinars." },
     { id: "talkadoo", chip: "What is Talkadoo?", keywords: ["talkadoo", "venture", "startup you", "edtech", "penguin", "bouncy"], a: "Talkadoo is the edtech venture I'm building: an interactive play mat that teaches kids languages through movement. So far I've done 30+ validation interviews, tested a first MVP with 20+ families, and secured an early grant. Scroll to the Talkadoo section to meet Bouncy." },
@@ -382,7 +382,7 @@ export const chatbot = {
     { id: "languages", chip: "What languages do you speak?", keywords: ["language", "languages", "german", "speak", "deutsch", "spanish", "french"], a: "I'm native in German, Spanish, and Catalan, and fluent in English and French. So German is no problem at all." },
     { id: "speaking", chip: "Public speaking & hosting?", keywords: ["speaking", "public speaking", "host", "hosting", "pitch", "stage", "webinar", "moderate"], a: "Public speaking is my favorite part of the job. I host the 'Meetings with the Dean' webinar series at JIBS, I've pitched ventures on stage many times, presented to 50+ CEOs at EHL, and sharpened it at Toastmasters. There's a pitch video in the Speaking section." },
     { id: "different", chip: "What makes you different?", keywords: ["different", "stand out", "unique", "why you", "special", "strength", "strengths", "good at"], a: "Two things. First, I'm genuinely great with people: building partnerships, keeping relationships alive, and turning them into real outcomes. Second, I'm a go-getter who teaches herself anything. I taught myself sustainability and wrote a full ESG report, taught myself to pitch, host, and design a jewelry catalog, and I built this site myself. I bring warmth, range, and follow-through." },
-    { id: "why", chip: "Why startups, why Munich?", keywords: ["why startup", "why munich", "why", "motivation"], a: "Startups are where people, strategy, and execution meet, and I do my best work close to the founders and the action. Munich is a growing hub in the DACH ecosystem I've been building in, and it's where I want to plant roots." },
+    { id: "why", chip: "Why startups, why DACH?", keywords: ["why startup", "why dach", "why munich", "why", "motivation"], a: "Startups are where people, strategy, and execution meet, and I do my best work close to the founders and the action. The DACH region is the startup ecosystem I've been building in, and it's where I want to plant roots." },
     { id: "worklike", chip: "What are you like to work with?", keywords: ["work with", "like to work", "personality", "team", "colleague"], a: "Warm, high-energy, and reliable. I take ownership, stay calm in chaos, and genuinely like people. I'd rather figure something out than wait to be told how." },
     { id: "cv", chip: "Can I see your CV?", keywords: ["cv", "resume", "download"], a: "Of course. There's a 'Download CV' button near the top of the page, that opens the full PDF." },
     { id: "book", chip: "How do I book a call?", keywords: ["book", "call", "meeting", "chat", "calendar", "contact", "email", "reach"], a: "Easiest way is to book a 30-minute chat on my Calendly, the 'Book a chat' button does it. Or email mairahaecker@gmail.com." },

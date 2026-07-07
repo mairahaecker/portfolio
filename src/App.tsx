@@ -709,7 +709,7 @@ function Contact() {
             Looking for someone who turns chaos into momentum?
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper/70">
-            I'm relocating to Munich and available from August 2026, open to startup roles in events, partnerships, operations, and building. Book a time below, or reach me any way you like.
+            I'm open to the DACH region and available from August 2026, ready to relocate for startup roles in partnerships, events, operations, and building. Book a time below, or reach me any way you like.
           </p>
         </Reveal>
 
