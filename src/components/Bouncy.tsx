@@ -1,102 +1,121 @@
-import { useEffect, useRef, useState } from "react";
-import { talkadoo } from "../data/content";
+import { useEffect, useRef, useState } from 'react'
+import { ANIMS, SHEET, type BouncyState } from '../data/sprites'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+
+interface BouncyProps {
+  state?: BouncyState
+  /** Rendered height in px (width matches — frames are square). */
+  size?: number
+  /** Face left instead of right. */
+  flip?: boolean
+  className?: string
+  style?: React.CSSProperties
+  /** Fires when a non-looping animation finishes. */
+  onRest?: () => void
+}
 
 /**
- * Bouncy the penguin: hops continuously, drifts toward the cursor inside its
- * section, and does a happy spin when clicked. Falls still for reduced-motion.
+ * Bouncy the penguin — plays a sprite sheet by stepping background-position
+ * through its 13 frames. One-shot poses play once then settle back to idle so
+ * he always feels alive. Purely decorative: aria-hidden, and under
+ * reduced-motion he simply shows a single friendly frame.
  */
-export function Bouncy({ className = "" }: { className?: string }) {
-  const wrapRef = useRef<HTMLDivElement | null>(null);
-  const [spin, setSpin] = useState(false);
-
+export default function Bouncy({
+  state = 'idle',
+  size = 160,
+  flip = false,
+  className = '',
+  style,
+  onRest,
+}: BouncyProps) {
+  const reduced = useReducedMotion()
+  const [active, setActive] = useState<BouncyState>(state)
+  const frameRef = useRef(0)
+  const rafRef = useRef<number | undefined>(undefined)
+  const lastRef = useRef(0)
+  useEffect(() => setActive(state), [state])
+  const anim = ANIMS[active]
+  const boxRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const section = wrap.closest("section");
-    if (!section) return;
-
-    let targetX = 0;
-    let targetY = 0;
-    let curX = 0;
-    let curY = 0;
-    let raf = 0;
-    let running = false;
-    let visible = false;
-
-    const loop = () => {
-      curX += (targetX - curX) * 0.08;
-      curY += (targetY - curY) * 0.08;
-      wrap.style.transform = `translate(${curX.toFixed(2)}px, ${curY.toFixed(2)}px)`;
-      // settle: once we're basically at the target, stop the loop until the next move
-      if (Math.abs(targetX - curX) < 0.15 && Math.abs(targetY - curY) < 0.15) {
-        running = false;
-        return;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    const ensureRunning = () => {
-      if (!running && visible) {
-        running = true;
-        raf = requestAnimationFrame(loop);
-      }
-    };
-
-    const onMove = (e: MouseEvent) => {
-      const r = section.getBoundingClientRect();
-      targetX = ((e.clientX - r.left) / r.width - 0.5) * 46;
-      targetY = ((e.clientY - r.top) / r.height - 0.5) * 22;
-      ensureRunning();
-    };
-    const onLeave = () => {
-      targetX = 0;
-      targetY = 0;
-      ensureRunning();
-    };
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        if (!visible) {
-          running = false;
-          cancelAnimationFrame(raf);
+    const box = boxRef.current
+    if (!box) return
+    if (reduced) {
+      paint(box, 0)
+      return
+    }
+    frameRef.current = 0
+    lastRef.current = 0
+    const frameMs = 1000 / SHEET.fps
+    const loop = (t: number) => {
+      if (!lastRef.current) lastRef.current = t
+      const elapsed = t - lastRef.current
+      if (elapsed >= frameMs) {
+        lastRef.current = t
+        frameRef.current += 1
+        if (frameRef.current >= SHEET.frames) {
+          if (anim.loop) {
+            frameRef.current = 0
+          } else {
+            paint(box, SHEET.frames - 1)
+            onRest?.()
+            setActive((s) => (s === active ? 'idle' : s))
+            return
+          }
         }
-      },
-      { threshold: 0 }
-    );
-    io.observe(section);
-    section.addEventListener("mousemove", onMove);
-    section.addEventListener("mouseleave", onLeave);
+        paint(box, frameRef.current)
+      }
+      rafRef.current = requestAnimationFrame(loop)
+    }
+    paint(box, 0)
+    // Only animate while on screen — keeps idle CPU near zero.
+    const start = () => {
+      if (rafRef.current == null) {
+        lastRef.current = 0
+        rafRef.current = requestAnimationFrame(loop)
+      }
+    }
+    const stop = () => {
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = undefined
+      }
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : stop()),
+      { rootMargin: '80px' },
+    )
+    io.observe(box)
     return () => {
-      cancelAnimationFrame(raf);
-      io.disconnect();
-      section.removeEventListener("mousemove", onMove);
-      section.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
-
+      io.disconnect()
+      stop()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, reduced])
   return (
-    <div ref={wrapRef} className={`will-change-transform ${className}`}>
-      <button
-        type="button"
-        onClick={() => {
-          setSpin(true);
-          window.setTimeout(() => setSpin(false), 700);
-        }}
-        aria-label="Make Bouncy jump"
-        className="block cursor-pointer border-0 bg-transparent p-0"
-      >
-        <img
-          src={talkadoo.bouncy}
-          alt="Bouncy, the Talkadoo penguin mascot"
-          draggable={false}
-          style={{
-            transition: spin ? "transform 0.7s cubic-bezier(.22,1.2,.36,1)" : undefined,
-            transform: spin ? "rotate(360deg) scale(1.08)" : undefined,
-          }}
-          className="bouncy-hop w-40 select-none drop-shadow-[0_18px_24px_rgba(124,83,201,0.35)] sm:w-52"
-        />
-      </button>
-    </div>
-  );
+    <div
+      ref={boxRef}
+      aria-hidden="true"
+      className={className}
+      style={{
+        width: size,
+        height: size,
+        backgroundImage: `url(${SHEET.basePath}${anim.file})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: `${SHEET.columns * 100}% ${SHEET.rows * 100}%`,
+        imageRendering: 'auto',
+        transform: flip ? 'scaleX(-1)' : undefined,
+        filter: 'drop-shadow(0 12px 10px rgba(43,43,51,0.18))',
+        ...style,
+      }}
+    />
+  )
+}
+
+/** Position the sheet so frame `i` (row-major, 4×4) fills the box. */
+function paint(box: HTMLDivElement, i: number) {
+  const col = i % SHEET.columns
+  const row = Math.floor(i / SHEET.columns)
+  const x = (col / (SHEET.columns - 1)) * 100
+  const y = (row / (SHEET.rows - 1)) * 100
+  box.style.backgroundPosition = `${x}% ${y}%`
 }

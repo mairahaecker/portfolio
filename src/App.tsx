@@ -1,7 +1,8 @@
 import { useState, useLayoutEffect, useRef, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { Reveal } from "./components/Reveal";
-import { Bouncy } from "./components/Bouncy";
+import Bouncy from "./components/Bouncy";
+import type { BouncyState } from "./data/sprites";
 import { Placeholder } from "./components/Placeholder";
 import { InViewVideo } from "./components/InViewVideo";
 import { ActionDock } from "./components/ActionDock";
@@ -471,6 +472,22 @@ function Highlights() {
 
 /* ------------------------------ Talkadoo --------------------------------- */
 
+/** Bouncy in the Talkadoo spotlight: waves hello, settles to idle, dances on
+ *  hover, and jumps when poked. Decorative delight moment. */
+function BouncyMascot({ className = "" }: { className?: string }) {
+  const [pose, setPose] = useState<BouncyState>("wave");
+  return (
+    <div
+      className={className}
+      onMouseEnter={() => setPose("dance")}
+      onMouseLeave={() => setPose("idle")}
+      onClick={() => setPose("jump")}
+    >
+      <Bouncy state={pose} size={184} />
+    </div>
+  );
+}
+
 function TalkadooSpot() {
   return (
     <section id="talkadoo" className="relative scroll-mt-20 overflow-hidden bg-gradient-to-br from-grape to-[#5b34a8] py-20 text-white md:py-28">
@@ -507,7 +524,7 @@ function TalkadooSpot() {
         </div>
 
         <div className="relative flex flex-col items-center">
-          <Bouncy className="absolute -top-8 right-0 z-20 sm:-right-10" />
+          <BouncyMascot className="absolute -top-12 right-0 z-20 cursor-pointer sm:-right-8" />
           <TiltCard max={6} className="mt-16 w-full max-w-xs">
             <img
               src={talkadoo.flyer}
